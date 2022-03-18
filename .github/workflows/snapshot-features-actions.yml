@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install JQ to parse JSON
-        runs: apt-get install -y jq
-        
+        run: apt-get install -y jq
+
       - uses: actions/checkout@v2
       
       - name: Log in to Docker Hub
