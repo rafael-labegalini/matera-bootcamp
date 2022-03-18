@@ -19,7 +19,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Extract metadata (tags) for Docker
-        run: 'export IMAGE_TAG=$(cat example-app/composer.json | jq ".version" -r)'
+        run: echo 'IMAGE_TAG=$(cat example-app/composer.json | jq .version -r)' >> $GITHUB_ENV
 
       - name: Check image version
-        run: echo $IMAGE_TAG
+        run: echo ${{ env.IMAGE_TAG }} && echo $GITHUB_RUN_ID
