@@ -19,7 +19,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Extract metadata (tags) for Docker
-        run: echo 'IMAGE_TAG=$(cat example-app/composer.json | jq .version -r)' >> $GITHUB_ENV
+        run: echo 'IMAGE_TAG=$(cat example-app/composer.json | jq .version -r)-SNAPSHOT-$GITHUB_RUN_ID' >> $GITHUB_ENV
 
       - name: Building image
-        run: "docker build -t rjlabegalini8/bootcamp:${{ env.IMAGE_TAG }}-SNAPSHOT-$GITHUB_RUN_ID ."
+        run: "docker build -t rjlabegalini8/bootcamp:${{ env.IMAGE_TAG }} ."
+
+      - name: Publishing Image
+        run: "docker push rjlabegalini8/bootcamp:${{ env.IMAGE_TAG }}"
