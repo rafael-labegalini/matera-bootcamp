@@ -1,4 +1,5 @@
 name: Ganerate Snapshot Feature
+on: [push]
 
 jobs:
   Build-Dockerfile:
