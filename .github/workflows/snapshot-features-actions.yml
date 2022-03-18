@@ -21,5 +21,5 @@ jobs:
       - name: Extract metadata (tags) for Docker
         run: echo 'IMAGE_TAG=$(cat example-app/composer.json | jq .version -r)' >> $GITHUB_ENV
 
-      - name: Check image version
-        run: echo ${{ env.IMAGE_TAG }} && echo $GITHUB_RUN_ID
+      - name: Building image
+        run: "docker build -t rjlabegalini8/bootcamp:${{ env.IMAGE_TAG }}-SNAPSHOT-$GITHUB_RUN_ID ."
