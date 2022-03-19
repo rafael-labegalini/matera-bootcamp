@@ -1,0 +1,30 @@
+name: Ganerate Snapshot Feature
+on:
+  push:
+    branches:
+      - 'features/**'
+
+jobs:
+  Build-Dockerfile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Install JQ to parse JSON
+        run: sudo apt-get install -y jq
+
+      - name: Extract metadata (tags) for Docker
+        run: echo 'IMAGE_TAG=$(cat example-app/composer.json | jq .version -r)-SNAPSHOT-$GITHUB_RUN_ID' >> $GITHUB_ENV
+
+      - name: Building Docker Image usin Dockerfile
+        run: docker build -t rjlabegalini8/bootcamp:${{ env.IMAGE_TAG }} .
+
+      - name: Authenticating on Docker Hub
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          username: ${{ secrets.DOCKER_LOGIN }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Send image to Docker Hub
+        run: docker push rjlabegalini8/bootcamp:${{ env.IMAGE_TAG }}
